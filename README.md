@@ -22,7 +22,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 | D Rebutazo | | crop\_growth\_stages, crop\_thresholds, care\_tasks | | | |
 
-| E Rio | | sensor\_readings, alerts, audit\_logs | | | |
+| E Rio | carmelario08 | sensor_readings, alerts, audit_logs | Alerts CRUD screen, sensor readings entry, audit log view | Fields vs weather coverage gaps (FULL OUTER via UNION of LEFT and RIGHT) | Unique feature: threshold alerts and auto-created tasks, audit |
 
 | F Riofrir | franklinriofrir16-bot | weather_logs, pest_reports | Pest_report CRUD screen, weather_logs entry, Dashboard | Pest report count per crop (RIGHT JOIN) | Reports and Dashboard |
 
