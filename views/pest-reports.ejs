@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pest Reports</title>
+</head>
+<body>
+    <h1>Pest Reports</h1>
+
+    <h2>Add New Report</h2>
+    <form action="/pest-reports/add" method="POST">
+        <input type="number" name="field_id" placeholder="Field ID" required />
+        <input type="text" name="pest_name" placeholder="Pest Name" required />
+        <input type="text" name="severity" placeholder="Severity (Low/Medium/High)" required />
+        <input type="text" name="notes" placeholder="Notes" />
+        <button type="submit">Add Report</button>
+    </form>
+
+    <h2>Existing Reports</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Field ID</th>
+            <th>Pest Name</th>
+            <th>Severity</th>
+            <th>Notes</th>
+            <th>Action</th>
+        </tr>
+        <% reports.forEach(report => { %>
+        <tr>
+            <td><%= report.report_id %></td>
+            <td><%= report.field_id %></td>
+            <td><%= report.pest_name %></td>
+            <td><%= report.severity %></td>
+            <td><%= report.notes %></td>
+            <td>
+                <form action="/pest-reports/delete/<%= report.report_id %>" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <% }) %>
+    </table>
+</body>
+</html>
