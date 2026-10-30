@@ -20,7 +20,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 | C Quisel | | plantings, harvests, input\_usage | | | |
 
-| D Rebutazo | | crop\_growth\_stages, crop\_thresholds, care\_tasks | | | |
+| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD; Growth Stages; Thresholds; stage updates; harvest prediction | Current stage per planting (INNER JOIN) | Unique feature (rules): stage advance and harvest prediction |
 
 | E Rio | | sensor\_readings, alerts, audit\_logs | | | |
 
@@ -37,3 +37,11 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 3\. npm install, then npm start.
 
+## Rebutazo — Individual Responsibilities
+
+- Growth Stages management
+- Crop Thresholds management
+- Growth-stage update functionality
+- Harvest prediction functionality
+- Growth Stages frontend screen
+- Thresholds frontend screen

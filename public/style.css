@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f8f2;
+    color: #333;
+}
+
+h1 {
+    color: #2e7d32;
+    text-align: center;
+}
+
+nav {
+    text-align: center;
+    margin: 20px 0;
+}
+
+nav a {
+    display: inline-block;
+    color: white;
+    background-color: #2e7d32;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+/* Navigation hover effect */
+nav a:hover {
+    background-color: #1b5e20;
+}
+
+/* Growth Stages and Thresholds styling */
+section {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    max-width: 800px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #2e7d32;
+}
