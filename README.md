@@ -20,7 +20,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 | C Quisel | | plantings, harvests, input\_usage | | | |
 
-| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD; Growth Stages; Thresholds; stage updates; harvest prediction | Current stage per planting (INNER JOIN) | Unique feature (rules): stage advance and harvest prediction |
+| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD, Growth Stages, Thresholds | Current stage per planting (INNER JOIN) | Unique feature (rules): stage advance and harvest prediction |
 
 | E Rio | | sensor\_readings, alerts, audit\_logs | | | |
 
