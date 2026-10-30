@@ -6,6 +6,8 @@ const PORT = 3000;
 // Middleware to read JSON requests
 app.use(express.json());
 
+app.use(express.static('public'));
+
 // Test route
 app.get('/', (req, res) => {
     res.status(200).json({
