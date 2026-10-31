@@ -18,7 +18,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 | B Silvano | | crops, fields, farm\_inputs | | | |
 
-| C Quisel | | plantings, harvests, input\_usage | | | |
+| C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (INNER JOIN) | Transactions |
 
 | D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD, Growth Stages, Thresholds | Current stage per planting (INNER JOIN) | Unique feature (rules): stage advance and harvest prediction |
 
