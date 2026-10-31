@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Care Tasks</title>
+</head>
+<body>
+    <h1>Care Tasks List</h1>
+    <ul>
+        <% tasks.forEach(task => { %>
+            <li>Task ID: <%= task.task_id %> - Status: <%= task.status %></li>
+        <% }) %>
+    </ul>
+</body>
+</html>

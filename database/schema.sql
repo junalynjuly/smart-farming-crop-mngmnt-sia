@@ -28,3 +28,33 @@ CREATE TABLE IF NOT EXISTS crop_logs (
     notes TEXT,
     FOREIGN KEY (crop_id) REFERENCES crops(id) ON DELETE CASCADE
 );
+
+- Create Users Table
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS crops (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    crop_name VARCHAR(100) NOT NULL,
+    variety VARCHAR(100),
+    planting_date DATE,
+    status VARCHAR(50) DEFAULT 'Active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS care_tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    task_name VARCHAR(150) NOT NULL,
+    description TEXT,
+    due_date DATE,
+    status VARCHAR(50) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

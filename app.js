@@ -21,7 +21,9 @@ app.set('view engine', 'ejs');
 const plantingRoutes = require('./routes/plantingRoutes');
 const harvestRoutes = require('./routes/harvestRoutes');
 const inputUsageRoutes = require('./routes/inputUsageRoutes');
+const careTaskRoutes = require('./routes/careTaskRoutes');
 
+app.use('/', careTaskRoutes);
 app.use(plantingRoutes);
 app.use(harvestRoutes);
 app.use(inputUsageRoutes);
