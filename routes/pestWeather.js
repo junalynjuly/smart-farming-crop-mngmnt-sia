@@ -41,5 +41,19 @@ router.post('/weather-logs/add', (req, res) => {
         }
     );
 });
-
+// --- DASHBOARD & PEST REPORT COUNT (RIGHT JOIN) ---
+router.get('/dashboard', (req, res) => {
+    const sql = `
+        SELECT c.crop_name, COUNT(pr.report_id) AS pest_count
+        FROM fields f
+        JOIN pest_reports pr ON f.field_id = pr.field_id
+        RIGHT JOIN crops c ON f.crop_id = c.crop_id
+        GROUP BY c.crop_id, c.crop_name;
+    `;
+    
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).send(err.message);
+        res.render('dashboard', { pestCounts: results });
+    });
+});
 module.exports = router;
