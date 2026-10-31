@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f4f7f6; color: #333; }
+        h1 { color: #2c3e50; }
+        h2 { color: #34495e; margin-top: 30px; border-bottom: 2px solid #2c3e50; padding-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; font-size: 14px; }
+        th { background-color: #2c3e50; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        form { background: #fff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-top: 10px; display: grid; gap: 10px; }
+        input { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+        button { background: #2c3e50; color: white; border: none; padding: 10px 15px; cursor: pointer; font-size: 14px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+
+<!-- Top Navigation Bar -->
+<nav style="background: #2c3e50; color: white; padding: 10px; position: sticky; top: 0; z-index: 1000; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.2); white-space: nowrap; overflow-x: auto; font-size: 13px;">
+    <a href="#plantings" style="color: white; margin: 0 8px; text-decoration: none; font-weight: bold;">Plantings</a> | 
+    <a href="#harvests" style="color: white; margin: 0 8px; text-decoration: none; font-weight: bold;">Harvests</a> | 
+    <a href="#inputs" style="color: white; margin: 0 8px; text-decoration: none; font-weight: bold;">Inputs</a>
+</nav>
+
+
+    <h1>🌾 Smart Farming & Crop Management Dashboard</h1>
+   
+
+<h2 id="plantings">Plantings Overview</h2>    <table>
+        <thead>
+            <tr>
+                <th>Planting ID</th>
+                <th>Field</th>
+                <th>Crop</th>
+                <th>Planting Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (report && report.length > 0) { %>
+                <% report.forEach(row => { %>
+                    <tr>
+                        <td><%= row.planting_id %></td>
+                        <td><%= row.field_name %></td>
+                        <td><%= row.crop_name %></td>
+                        <td><%= row.planting_date ? new Date(row.planting_date).toLocaleDateString() : '' %></td>
+                        <td><strong><%= row.status %></strong></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="5">No records found.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+
+
+    <h2>Add New Planting</h2>
+    <form action="/plantings/add" method="POST">
+        <div>
+            <label>Field ID:</label><br>
+            <input type="number" name="field_id" required>
+        </div>
+        <div>
+            <label>Crop ID:</label><br>
+            <input type="number" name="crop_id" required>
+        </div>
+        <div>
+            <label>Planted By (User ID):</label><br>
+            <input type="number" name="planted_by" required>
+        </div>
+        <div>
+            <label>Planting Date:</label><br>
+            <input type="date" name="planting_date" required>
+        </div>
+        <div>
+            <label>Expected Harvest Date:</label><br>
+            <input type="date" name="expected_harvest_date" required>
+        </div>
+        <div>
+            <label>Current Stage ID:</label><br>
+            <input type="number" name="current_stage_id" required>
+        </div>
+        <div>
+            <button type="submit">Save Planting</button>
+        </div>
+    </form>
+
+<h2 id="harvests">Harvest Records</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Harvest ID</th>
+                <th>Planting ID</th>
+                <th>Quantity (kg)</th>
+                <th>Harvest Date</th>
+                <th>Quality Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (typeof harvests !== 'undefined' && harvests.length > 0) { %>
+                <% harvests.forEach(row => { %>
+                    <tr>
+                        <td><%= row.harvest_id %></td>
+                        <td><%= row.planting_id %></td>
+                        <td><%= row.quantity_kg %> kg</td>
+                        <td><%= row.harvest_date ? new Date(row.harvest_date).toLocaleDateString() : '' %></td>
+                        <td><%= row.quality_grade %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="5">No harvest records found.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+
+
+    <h2>Record New Harvest</h2>
+    <form action="/harvests/add" method="POST">
+        <div>
+            <label>Planting ID:</label><br>
+            <input type="number" name="planting_id" required>
+        </div>
+        <div>
+            <label>Quantity (kg):</label><br>
+            <input type="number" step="0.01" name="quantity_kg" required>
+        </div>
+        <div>
+            <label>Harvest Date:</label><br>
+            <input type="date" name="harvest_date" required>
+        </div>
+        <div>
+            <label>Quality Grade:</label><br>
+            <input type="text" name="quality_grade" placeholder="e.g. Grade A" required>
+        </div>
+        <div>
+            <label>Recorded By (User ID):</label><br>
+            <input type="number" name="recorded_by" required>
+        </div>
+        <div>
+            <button type="submit">Save Harvest</button>
+        </div>
+    </form>
+
+<h2 id="inputs">Input Usage Records</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Usage ID</th>
+                <th>Planting ID</th>
+                <th>Input ID</th>
+                <th>Quantity Used</th>
+                <th>Usage Date</th>
+                <th>Used By</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (typeof inputs !== 'undefined' && inputs.length > 0) { %>
+                <% inputs.forEach(row => { %>
+                    <tr>
+                        <td><%= row.usage_id %></td>
+                        <td><%= row.planting_id %></td>
+                        <td><%= row.input_id %></td>
+                        <td><%= row.quantity_used %></td>
+                        <td><%= row.usage_date ? new Date(row.usage_date).toLocaleDateString() : '' %></td>
+                        <td><%= row.used_by %></td>
+                    </tr>
+                <% }) %>
+            <% } else { %>
+                <tr><td colspan="6">No input usage records found.</td></tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <h2>Record Input Usage</h2>
+    <form action="/inputs/add" method="POST">
+        <div>
+            <label>Planting ID:</label><br>
+            <input type="number" name="planting_id" required>
+        </div>
+        <div>
+            <label>Input ID:</label><br>
+            <input type="number" name="input_id" required>
+        </div>
+        <div>
+            <label>Quantity Used:</label><br>
+            <input type="number" step="0.01" name="quantity_used" required>
+        </div>
+        <div>
+            <label>Usage Date:</label><br>
+            <input type="date" name="usage_date" required>
+        </div>
+        <div>
+            <label>Used By (User ID):</label><br>
+            <input type="number" name="used_by" required>
+        </div>
+        <div>
+            <button type="submit">Save Input Usage</button>
+        </div>
+    </form>
+
+
+
+</body>
+</html>
+
