@@ -16,7 +16,7 @@ Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
 
 | A Singuit | | roles, farms, users | | | |
 
-| B Silverio | | crops, fields, farm_inputs | | | |
+| B Silverio | MarsWood2007 | crops, fields, farm_inputs | Crops CRUD, Fields CRUD, Farm Inputs | Fields with no active planting (LEFT JOIN) | Master data |
 
 | C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (INNER JOIN) | Transactions |
 
