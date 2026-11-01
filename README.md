@@ -4,7 +4,7 @@
 
 \## Group members
 
-Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
+Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
 
 
 
@@ -16,7 +16,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 | A Singuit | | roles, farms, users | | | |
 
-| B Silvano | | crops, fields, farm\_inputs | | | |
+| B Silverio | | crops, fields, farm_inputs | | | |
 
 | C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (INNER JOIN) | Transactions |
 
