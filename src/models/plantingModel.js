@@ -76,3 +76,9 @@ function remove(id) {
 }
 
 module.exports = { getAll, getById, create, update, remove };
+
+module.exports.getOptions = async () => {
+  const [fields] = await pool.query('SELECT field_id, field_name, status FROM fields ORDER BY field_name');
+  const [crops] = await pool.query('SELECT crop_id, crop_name, growth_duration_days FROM crops ORDER BY crop_name');
+  return { fields, crops };
+};

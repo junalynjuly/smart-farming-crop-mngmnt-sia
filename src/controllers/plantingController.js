@@ -65,3 +65,8 @@ exports.remove = async (req, res) => {
     res.status(200).json({ success: true, message: 'Planting deleted.' });
   } catch (e) { fail(res, e); }
 };
+
+exports.options = async (req, res) => {
+  try { res.status(200).json({ success: true, data: await model.getOptions() }); }
+  catch (e) { fail(res, e); }
+};
