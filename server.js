@@ -17,6 +17,7 @@ app.use('/', sensorRouter);
 app.use('/api/plantings', require('./src/routes/plantingRoutes'));
 app.use('/api/harvests', require('./src/routes/harvestRoutes'));
 app.use('/api/input-usage', require('./src/routes/inputUsageRoutes'));
+app.use('/', require('./src/routes/readingsAlertsRoutes'));
 app.use('/api/reports', require('./src/routes/reportRoutes'));
 
 const growthStageRoutes = require('./src/routes/growthStageRoutes');

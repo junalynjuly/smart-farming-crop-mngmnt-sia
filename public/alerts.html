@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alerts</title>
+<style>
+body { font-family: sans-serif; margin: 16px; background: #f4f6f4; }
+h1 { color: #2e7d32; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 8px; border: 1px solid #ddd; font-size: 14px; }
+th { background: #2e7d32; color: #fff; }
+.High { color: #c62828; font-weight: bold; }
+.Medium { color: #ef6c00; font-weight: bold; }
+.Low { color: #2e7d32; }
+button { margin: 2px; padding: 4px 8px; }
+.error { color: #c62828; }
+</style>
+</head>
+<body>
+<h1>Sensor Alerts</h1>
+<div id="msg">Loading...</div>
+<table id="tbl" style="display:none">
+<thead><tr><th>ID</th><th>Field</th><th>Severity</th><th>Message</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="rows"></tbody>
+</table>
+<script>
+const msg = document.getElementById('msg');
+const tbl = document.getElementById('tbl');
+const rows = document.getElementById('rows');
+
+function show(err) {
+  msg.className = 'error';
+  msg.textContent = 'Error: ' + err.message;
+}
+
+async function load() {
+  msg.className = '';
+  msg.textContent = 'Loading...';
+  try {
+    const res = await fetch('/api/alerts');
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || 'Request failed');
+    rows.innerHTML = '';
+    json.data.forEach(function (a) {
+      const tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + a.alert_id + '</td>' +
+        '<td>' + a.field_id + '</td>' +
+        '<td class="' + a.severity + '">' + a.severity + '</td>' +
+        '<td>' + a.message + '</td>' +
+        '<td>' + a.status + '</td>' +
+        '<td></td>';
+      const cell = tr.lastChild;
+      ['Acknowledged', 'Resolved'].forEach(function (s) {
+        const b = document.createElement('button');
+        b.textContent = s === 'Resolved' ? 'Resolve' : 'Acknowledge';
+        b.onclick = function () { setStatus(a.alert_id, s); };
+        cell.appendChild(b);
+      });
+      rows.appendChild(tr);
+    });
+    tbl.style.display = 'table';
+    msg.textContent = json.data.length + ' alert(s)';
+  } catch (err) {
+    tbl.style.display = 'none';
+    show(err);
+  }
+}
+
+async function setStatus(id, status) {
+  try {
+    const res = await fetch('/api/alerts/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: status })
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.message || 'Update failed');
+    load();
+  } catch (err) {
+    show(err);
+  }
+}
+
+load();
+</script>
+</body>
+</html>
