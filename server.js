@@ -14,6 +14,8 @@ const pestWeatherRouter = require('./routes/pestWeather');
 app.use('/', pestWeatherRouter);
 const alertRouter = require('./routes/alertRoutes');
 app.use('/', alertRouter);
+const sensorRouter = require('./routes/sensorRoutes');
+app.use('/', sensorRouter);
 
 // Test route
 app.get('/', (req, res) => {
