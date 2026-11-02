@@ -1,17 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Farming and Crop Management System</title>
-    
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Smart Farming and Crop Management System</h1>
 
     <p>Monitor crop growth stages, manage thresholds, and predict harvest schedules.</p>
-    
+
     <nav>
         <a href="#growth-stages">Growth Stages</a>
         <a href="#thresholds">Thresholds</a>
@@ -20,6 +21,31 @@
     <section id="growth-stages">
         <h2>Crop Growth Stages</h2>
         <p>View and monitor the growth stages of your crops.</p>
+
+        <h3>Add a Growth Stage</h3>
+
+        <form id="growth-stage-form">
+            <label for="crop-id">Crop ID:</label>
+            <input type="number" id="crop-id" required>
+
+            <label for="stage-name">Stage Name:</label>
+            <input type="text" id="stage-name" required>
+
+            <label for="stage-order">Stage Order:</label>
+            <input type="number" id="stage-order" required>
+
+            <label for="start-day">Start Day:</label>
+            <input type="number" id="start-day" min="0" required>
+
+            <label for="end-day">End Day:</label>
+            <input type="number" id="end-day" min="0" required>
+
+            <button type="submit">Add Growth Stage</button>
+        </form>
+
+        <div id="growth-stages-list">
+            Loading growth stages...
+        </div>
     </section>
 
     <section id="thresholds">
