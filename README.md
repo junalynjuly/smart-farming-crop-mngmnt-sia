@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 # Smart Farming and Crop Management System (SIA)
-=======
-<<<<<<< HEAD
-# Smart Farming and Crop Management System (SIA)
-
-
->>>>>>> 288f5d0 (feat(singuit): add final schema and owner row)
 
 \## Group members
 
