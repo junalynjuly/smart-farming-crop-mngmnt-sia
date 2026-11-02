@@ -10,16 +10,19 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // Use Pest Reports and Weather Logs routes
+<<<<<<< ours
 const pestWeatherRouter = require('./routes/pestWeather');
 app.use('/', pestWeatherRouter);
 const alertRouter = require('./routes/alertRoutes');
 app.use('/', alertRouter);
 const sensorRouter = require('./routes/sensorRoutes');
 app.use('/', sensorRouter);
+=======
 app.use('/api/plantings', require('./src/routes/plantingRoutes'));
 app.use('/api/harvests', require('./src/routes/harvestRoutes'));
 app.use('/api/input-usage', require('./src/routes/inputUsageRoutes'));
 app.use('/api/reports', require('./src/routes/reportRoutes'));
+>>>>>>> theirs
 
 // Test route
 app.get('/', (req, res) => {
