@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../src/config/db');
+const  db  = require('../src/config/db');
 
 // --- PEST REPORTS ---
 router.get('/pest-reports', (req, res) => {
