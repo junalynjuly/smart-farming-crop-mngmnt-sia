@@ -13,6 +13,7 @@ app.set('view engine', 'ejs');
 const pestWeatherRouter = require('./routes/pestWeather');
 app.use('/', pestWeatherRouter);
 app.use('/api/plantings', require('./src/routes/plantingRoutes'));
+app.use('/api/harvests', require('./src/routes/harvestRoutes'));
 app.use('/api/reports', require('./src/routes/reportRoutes'));
 
 // Test route
