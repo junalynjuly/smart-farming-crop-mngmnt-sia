@@ -17,7 +17,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 |---|---|---|---|---|---|
 
-| A Singuit | | roles, farms, users | Login, Users CRUD, roles and farm lists | Users with role and farm (INNER) | Core:login, roles, shared layout, DB connection |
+| A Singuit | johnmarabubakar-afk | roles, farms, users | Login, Users CRUD, roles and farms list | Users with role and farm (INNER) | Core:login, roles, shared layout, DB connection |
 
 | B Silvano | | crops, fields, farm\_inputs | | | |
 
