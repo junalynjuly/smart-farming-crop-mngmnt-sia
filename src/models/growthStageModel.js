@@ -18,7 +18,6 @@ function getAllGrowthStages(callback) {
     });
 }
 
-// CREATE a new growth stage
 function createGrowthStage(data, callback) {
     const sql = `
         INSERT INTO crop_growth_stages
@@ -43,7 +42,6 @@ function createGrowthStage(data, callback) {
     });
 }
 
-// UPDATE an existing growth stage
 function updateGrowthStage(stageId, data, callback) {
     const sql = `
         UPDATE crop_growth_stages
@@ -73,7 +71,6 @@ function updateGrowthStage(stageId, data, callback) {
     });
 }
 
-// DELETE an existing growth stage
 function deleteGrowthStage(stageId, callback) {
     const sql = `
         DELETE FROM crop_growth_stages

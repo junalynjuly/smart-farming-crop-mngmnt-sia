@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plantings</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 16px; background: #f9f9f9; color: #333; }
+  h1, h2 { color: #2e7d32; }
+  .card { background: #fff; padding: 14px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 16px; }
+  label { display: block; font-weight: bold; font-size: 13px; margin-top: 8px; }
+  select, input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+  button { padding: 10px 14px; border: 0; border-radius: 4px; cursor: pointer; color: #fff; background: #2e7d32; margin-top: 10px; width: 100%; }
+  button.del { background: #d32f2f; width: auto; padding: 5px 10px; margin: 0; }
+  .wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; white-space: nowrap; }
+  th { background: #2e7d32; color: #fff; }
+  #loading { display: none; color: #666; font-style: italic; }
+  .error { background: #fdecea; color: #b71c1c; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+  .ok { background: #e8f5e9; color: #1b5e20; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+  #msg:empty { display: none; }
+</style>
+</head>
+<body>
+<h1>Plantings</h1>
+<div id="msg"></div>
+
+<div class="card">
+  <h2>Add Planting</h2>
+  <label>Field</label>
+  <select id="field"></select>
+  <label>Crop</label>
+  <select id="crop"></select>
+  <label>Planting Date</label>
+  <input type="date" id="date">
+  <button id="add">Add Planting</button>
+</div>
+
+<h2>Existing Plantings</h2>
+<p id="loading">Loading...</p>
+<div class="wrap">
+<table>
+  <thead><tr><th>ID</th><th>Field</th><th>Crop</th><th>Planted</th><th>Expected Harvest</th><th>Status</th><th>Action</th></tr></thead>
+  <tbody id="rows"></tbody>
+</table>
+</div>
+
+<script>
+var API = '/api/plantings';
+function $(id) { return document.getElementById(id); }
+
+function show(text, isError) {
+  var m = $('msg');
+  m.textContent = text || '';
+  m.className = isError ? 'error' : 'ok';
+}
+
+async function call(url, opts) {
+  var r = await fetch(url, opts);
+  var j;
+  try { j = await r.json(); } catch (e) { j = { success: false, message: 'Bad response from server.' }; }
+  if (!r.ok || !j.success) throw new Error(j.message || 'Request failed.');
+  return j;
+}
+
+function option(value, text) {
+  var o = document.createElement('option');
+  o.value = value;
+  o.textContent = text;
+  return o;
+}
+
+async function loadOptions() {
+  var j = await call(API + '/options');
+  var f = $('field'), c = $('crop');
+  f.innerHTML = ''; c.innerHTML = '';
+  f.appendChild(option('', '-- Choose Field --'));
+  c.appendChild(option('', '-- Choose Crop --'));
+  j.data.fields.forEach(function (x) {
+    if (x.status !== 'Planted') f.appendChild(option(x.field_id, x.field_name));
+  });
+  j.data.crops.forEach(function (x) {
+    c.appendChild(option(x.crop_id, x.crop_name + ' (' + x.growth_duration_days + ' days)'));
+  });
+}
+
+function cell(tr, text) {
+  var td = document.createElement('td');
+  td.textContent = text == null ? '-' : text;
+  tr.appendChild(td);
+  return td;
+}
+
+function render(list) {
+  var body = $('rows');
+  body.innerHTML = '';
+  if (!list.length) {
+    var tr0 = document.createElement('tr');
+    var td0 = cell(tr0, 'No plantings yet.');
+    td0.colSpan = 7;
+    body.appendChild(tr0);
+    return;
+  }
+  list.forEach(function (p) {
+    var tr = document.createElement('tr');
+    cell(tr, p.planting_id);
+    cell(tr, p.field_name);
+    cell(tr, p.crop_name);
+    cell(tr, p.planting_date);
+    cell(tr, p.expected_harvest_date);
+    cell(tr, p.status);
+    var act = cell(tr, '');
+    var b = document.createElement('button');
+    b.textContent = 'Delete';
+    b.className = 'del';
+    b.onclick = function () { remove(p.planting_id); };
+    act.appendChild(b);
+    body.appendChild(tr);
+  });
+}
+
+async function loadList() {
+  $('loading').style.display = 'block';
+  try {
+    var j = await call(API);
+    render(j.data);
+  } catch (e) {
+    show(e.message, true);
+  } finally {
+    $('loading').style.display = 'none';
+  }
+}
+
+async function remove(id) {
+  if (!confirm('Delete planting #' + id + '?')) return;
+  try {
+    var j = await call(API + '/' + id, { method: 'DELETE' });
+    show(j.message, false);
+    await loadOptions();
+    await loadList();
+  } catch (e) {
+    show(e.message, true);
+  }
+}
+
+$('add').onclick = async function () {
+  var body = {
+    field_id: Number($('field').value),
+    crop_id: Number($('crop').value),
+    planting_date: $('date').value
+  };
+  $('add').disabled = true;
+  $('add').textContent = 'Saving...';
+  try {
+    await call(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    show('Planting added.', false);
+    await loadOptions();
+    await loadList();
+  } catch (e) {
+    show(e.message, true);
+  } finally {
+    $('add').disabled = false;
+    $('add').textContent = 'Add Planting';
+  }
+};
+
+(async function start() {
+  try { await loadOptions(); } catch (e) { show(e.message, true); }
+  loadList();
+})();
+</script>
+</body>
+</html>
