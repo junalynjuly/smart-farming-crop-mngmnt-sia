@@ -18,9 +18,9 @@ Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
 
 | B Silverio | MarsWood2007 | crops, fields, farm_inputs | Crops CRUD, Fields CRUD, Farm Inputs | Fields with no active planting (LEFT JOIN) | Master data |
 
-| C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (INNER JOIN) | Transactions |
+| C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (LEFT JOIN) | Transactions |
 
-| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD, Growth Stages, Thresholds | Current stage per planting (INNER JOIN) | Unique feature (rules): stage advance and harvest prediction |
+| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD, Growth Stages, Thresholds | Current stage per planting (LEFT JOIN) | Unique feature (rules): stage advance and harvest prediction |
 
 | E Rio | carmelario08 | sensor_readings, alerts, audit_logs | Alerts CRUD screen, sensor readings entry, audit log view | Fields vs weather coverage gaps (FULL OUTER via UNION of LEFT and RIGHT) | Unique feature: threshold alerts and auto-created tasks, audit |
 
