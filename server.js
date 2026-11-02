@@ -16,6 +16,10 @@ const alertRouter = require('./routes/alertRoutes');
 app.use('/', alertRouter);
 const sensorRouter = require('./routes/sensorRoutes');
 app.use('/', sensorRouter);
+app.use('/api/plantings', require('./src/routes/plantingRoutes'));
+app.use('/api/harvests', require('./src/routes/harvestRoutes'));
+app.use('/api/input-usage', require('./src/routes/inputUsageRoutes'));
+app.use('/api/reports', require('./src/routes/reportRoutes'));
 
 // Test route
 app.get('/', (req, res) => {
