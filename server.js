@@ -33,7 +33,15 @@ const growthStageRoutes = require('./src/routes/growthStageRoutes');
 app.use('/api/growth-stages', growthStageRoutes);
 
 app.use('/api/thresholds', require('./src/routes/thresholdRoutes'));
+const pestReportRoutes = require('./src/routes/pestReportsroutes');
+app.use('/api/pest-reports', pestReportRoutes);
 
+const weatherRoutes = require('./src/routes/weatherRoutes');
+app.use('/', weatherRoutes);
+
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+});
 // Home route
 app.get('/', (req, res) => {
     res.status(200).json({
