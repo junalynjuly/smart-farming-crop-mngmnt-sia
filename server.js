@@ -22,6 +22,7 @@ app.use('/api/plantings', require('./src/routes/plantingRoutes'));
 
 // Current Stage per Planting
 app.use('/api/current-stages', require('./src/routes/currentStageRoutes'));
+app.use('/api/stage-advancement', require('./src/routes/stageAdvancementRoutes'));
 
 app.use('/api/harvests', require('./src/routes/harvestRoutes'));
 app.use('/api/input-usage', require('./src/routes/inputUsageRoutes'));
