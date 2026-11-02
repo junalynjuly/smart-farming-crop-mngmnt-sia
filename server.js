@@ -3,24 +3,47 @@ const app = express();
 
 const PORT = 3000;
 
+<<<<<<< HEAD
 // Middleware to read JSON and form data requests
+=======
+>>>>>>> origin/main
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
+<<<<<<< HEAD
 // Use Pest Reports and Weather Logs routes
 const pestWeatherRouter = require('./routes/pestWeather');
 app.use('/', pestWeatherRouter);
 
 // Test route
+=======
+const pestWeatherRouter = require('./routes/pestWeather');
+app.use('/', pestWeatherRouter);
+const alertRouter = require('./routes/alertRoutes');
+app.use('/', alertRouter);
+const sensorRouter = require('./routes/sensorRoutes');
+app.use('/', sensorRouter);
+app.use('/api/plantings', require('./src/routes/plantingRoutes'));
+app.use('/api/harvests', require('./src/routes/harvestRoutes'));
+app.use('/api/input-usage', require('./src/routes/inputUsageRoutes'));
+app.use('/api/reports', require('./src/routes/reportRoutes'));
+
+const growthStageRoutes = require('./src/routes/growthStageRoutes');
+app.use('/api/growth-stages', growthStageRoutes);
+
+>>>>>>> origin/main
 app.get('/', (req, res) => {
     res.status(200).json({
         message: 'Smart Farming and Crop Management System API is running!'
     });
 });
 
+<<<<<<< HEAD
 // Start server
+=======
+>>>>>>> origin/main
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
