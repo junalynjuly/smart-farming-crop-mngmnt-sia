@@ -12,6 +12,8 @@ app.set('view engine', 'ejs');
 // Use Pest Reports and Weather Logs routes
 const pestWeatherRouter = require('./routes/pestWeather');
 app.use('/', pestWeatherRouter);
+const alertRouter = require('./routes/alertRoutes');
+app.use('/', alertRouter);
 
 // Test route
 app.get('/', (req, res) => {
