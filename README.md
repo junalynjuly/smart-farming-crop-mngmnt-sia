@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-\# Smart Farming and Crop Management System (SIA)
-
-
+# Smart Farming and Crop Management System (SIA)
 
 \## Group members
 
@@ -16,8 +11,6 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 | Member | GitHub username | Tables | Endpoints | Join report endpoint and type | Feature role |
 
 |---|---|---|---|---|---|
-
-| A Singuit | johnmarabubakar-afk | roles, farms, users | Login, Users CRUD, roles and farms list | Users with role and farm (INNER) | Core:login, roles, shared layout, DB connection |
 
 | B Silvano | | crops, fields, farm\_inputs | | | |
 
