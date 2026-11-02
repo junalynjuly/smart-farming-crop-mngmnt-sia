@@ -225,3 +225,59 @@ async function deleteGrowthStage(stage) {
 }
 
 loadGrowthStages();
+
+// Load and display Crop Thresholds
+async function loadThresholds() {
+    const list = document.getElementById('threshold-list');
+
+    try {
+        const response = await fetch('/api/thresholds');
+        const result = await response.json();
+
+        if (!result.success) {
+            list.textContent = 'Failed to load thresholds.';
+            return;
+        }
+
+        if (result.data.length === 0) {
+            list.textContent = 'No thresholds found.';
+            return;
+        }
+
+        let html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Crop ID</th>
+                        <th>Metric</th>
+                        <th>Minimum</th>
+                        <th>Maximum</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        result.data.forEach(threshold => {
+            html += `
+                <tr>
+                    <td>${threshold.threshold_id}</td>
+                    <td>${threshold.crop_id}</td>
+                    <td>${threshold.metric}</td>
+                    <td>${threshold.min_value}</td>
+                    <td>${threshold.max_value}</td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table>';
+        list.innerHTML = html;
+
+    } catch (error) {
+        list.textContent = 'Could not load thresholds. Please check the server.';
+        console.error(error);
+    }
+}
+
+// Display thresholds when the page opens
+loadThresholds();

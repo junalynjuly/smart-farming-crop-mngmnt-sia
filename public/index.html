@@ -49,9 +49,35 @@
     </section>
 
     <section id="thresholds">
-        <h2>Crop Thresholds</h2>
-        <p>Manage and monitor the threshold values for your crops.</p>
-    </section>
+    <h2>Crop Thresholds</h2>
+    <p>Manage and monitor the threshold values for your crops.</p>
+
+    <h3>Add a Threshold</h3>
+
+    <form id="threshold-form">
+        <label>Crop ID:</label>
+        <input type="number" id="threshold-crop-id" required>
+
+        <label>Metric:</label>
+        <select id="threshold-metric">
+            <option value="soil_moisture">Soil Moisture</option>
+            <option value="temperature">Temperature</option>
+            <option value="ph">pH</option>
+        </select>
+
+        <label>Min Value:</label>
+        <input type="number" step="0.01" id="threshold-min" required>
+
+        <label>Max Value:</label>
+        <input type="number" step="0.01" id="threshold-max" required>
+
+        <button type="submit">Add Threshold</button>
+    </form>
+
+    <div id="threshold-list">
+        Loading thresholds...
+    </div>
+</section>
 
     <script src="script.js"></script>
 </body>
