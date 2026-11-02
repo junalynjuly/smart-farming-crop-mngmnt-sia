@@ -1,49 +1,32 @@
 
 const db = require('../config/db');
 
-// GET all growth stages
-function getAllGrowthStages(callback) {
-    const sql = `
+async function getAllGrowthStages() {
+    const [rows] = await db.query(`
         SELECT *
         FROM crop_growth_stages
         ORDER BY crop_id, stage_order
-    `;
-
-    db.query(sql, (err, results) => {
-        if (err) {
-            return callback(err, null);
-        }
-
-        callback(null, results);
-    });
+    `);
+    return rows;
 }
 
-function createGrowthStage(data, callback) {
-    const sql = `
+async function createGrowthStage(data) {
+    const [result] = await db.query(`
         INSERT INTO crop_growth_stages
         (crop_id, stage_name, stage_order, start_day, end_day)
         VALUES (?, ?, ?, ?, ?)
-    `;
-
-    const values = [
+    `, [
         data.crop_id,
         data.stage_name,
         data.stage_order,
         data.start_day,
         data.end_day
-    ];
-
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            return callback(err, null);
-        }
-
-        callback(null, result);
-    });
+    ]);
+    return result;
 }
 
-function updateGrowthStage(stageId, data, callback) {
-    const sql = `
+async function updateGrowthStage(stageId, data) {
+    const [result] = await db.query(`
         UPDATE crop_growth_stages
         SET crop_id = ?,
             stage_name = ?,
@@ -51,39 +34,23 @@ function updateGrowthStage(stageId, data, callback) {
             start_day = ?,
             end_day = ?
         WHERE stage_id = ?
-    `;
-
-    const values = [
+    `, [
         data.crop_id,
         data.stage_name,
         data.stage_order,
         data.start_day,
         data.end_day,
         stageId
-    ];
-
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            return callback(err, null);
-        }
-
-        callback(null, result);
-    });
+    ]);
+    return result;
 }
 
-function deleteGrowthStage(stageId, callback) {
-    const sql = `
+async function deleteGrowthStage(stageId) {
+    const [result] = await db.query(`
         DELETE FROM crop_growth_stages
         WHERE stage_id = ?
-    `;
-
-    db.query(sql, [stageId], (err, result) => {
-        if (err) {
-            return callback(err, null);
-        }
-
-        callback(null, result);
-    });
+    `, [stageId]);
+    return result;
 }
 
 module.exports = {

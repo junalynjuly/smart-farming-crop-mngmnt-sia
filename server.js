@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
-const pestWeatherRouter = require('./routes/pestWeather');
+const pestWeatherRouter = require('./routes/masterDataRoutes');
 app.use('/', pestWeatherRouter);
 const alertRouter = require('./routes/alertRoutes');
 app.use('/', alertRouter);
