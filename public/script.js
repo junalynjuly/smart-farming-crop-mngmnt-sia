@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-console.log("Smart Farming JavaScript is connected!");
-=======
 console.log("Smart Farming JavaScript is connected!");
 
 async function loadGrowthStages() {
@@ -228,4 +225,4 @@ async function deleteGrowthStage(stage) {
 }
 
 loadGrowthStages();
->>>>>>> origin/main
+
