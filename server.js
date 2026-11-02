@@ -22,6 +22,7 @@ app.use('/api/reports', require('./src/routes/reportRoutes'));
 
 const growthStageRoutes = require('./src/routes/growthStageRoutes');
 app.use('/api/growth-stages', growthStageRoutes);
+app.use('/api/thresholds', require('./src/routes/thresholdRoutes'));
 
 app.get('/', (req, res) => {
     res.status(200).json({
