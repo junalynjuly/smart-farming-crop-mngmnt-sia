@@ -36,12 +36,3 @@ Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
 2\. Copy .env.example to .env and fill in your values.
 
 3\. npm install, then npm start.
-
-## Rebutazo — Individual Responsibilities
-
-- Growth Stages management
-- Crop Thresholds management
-- Growth-stage update functionality
-- Harvest prediction functionality
-- Growth Stages frontend screen
-- Thresholds frontend screen
