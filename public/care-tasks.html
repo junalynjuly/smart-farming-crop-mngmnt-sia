@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Care Tasks</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 16px; background: #f9f9f9; color: #333; }
+  h1, h2 { color: #2e7d32; }
+  .card { background: #fff; padding: 14px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 16px; }
+  label { display: block; font-weight: bold; font-size: 13px; margin-top: 8px; }
+  input, select { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+  button { padding: 9px 14px; border: 0; border-radius: 4px; cursor: pointer; color: #fff; background: #2e7d32; margin: 5px 4px 0 0; }
+  button.del { background: #d32f2f; }
+  button.secondary { background: #666; }
+  button:disabled { opacity: .6; cursor: not-allowed; }
+  .wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; background: #fff; }
+  th, td { border: 1px solid #ddd; padding: 8px; text-align: left; white-space: nowrap; }
+  th { background: #2e7d32; color: #fff; }
+  #loading { display: none; color: #666; font-style: italic; }
+  .error { background: #fdecea; color: #b71c1c; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+  .ok { background: #e8f5e9; color: #1b5e20; padding: 10px; border-radius: 4px; margin-bottom: 10px; }
+  #msg:empty { display: none; }
+</style>
+</head>
+<body>
+<h1>Care Tasks</h1>
+<p><a href="/plantings.html">View Plantings</a></p>
+<div id="msg" role="status" aria-live="polite"></div>
+
+<div class="card">
+  <h2 id="formTitle">Add Care Task</h2>
+  <form id="taskForm">
+    <label for="planting">Planting ID</label>
+    <input id="planting" type="number" min="1" required>
+
+    <label for="type">Task Type</label>
+    <select id="type" required>
+      <option value="">-- Choose Task Type --</option>
+      <option>Irrigation</option>
+      <option>Fertilizing</option>
+      <option>Pest control</option>
+      <option>Weeding</option>
+      <option>Other</option>
+    </select>
+
+    <label for="dueDate">Due Date</label>
+    <input id="dueDate" type="date" required>
+
+    <label for="status">Status</label>
+    <select id="status" required>
+      <option>Pending</option>
+      <option>Done</option>
+      <option>Skipped</option>
+      <option>Overdue</option>
+    </select>
+
+     <label for="source">Source</label>
+    <select id="source" required>
+      <option>Manual</option>
+      <option>Auto</option>
+    </select>
+
+    <label for="reason">Skip Reason (required if status is Skipped)</label>
+    <input id="reason" type="text" maxlength="255" placeholder="Enter reason if skipped">
+
+    <label for="assigned">Assigned User ID (optional)</label>
+    <input id="assigned" type="number" min="1">
+
+    <button id="saveBtn" type="submit">Add Care Task</button>
+    <button id="cancelBtn" class="secondary" type="button" hidden>Cancel Edit</button>
+  </form>
+</div>
+
+<h2>Existing Care Tasks</h2>
+<p id="loading">Loading care tasks...</p>
+<div class="wrap">
+<table>
+  <thead>
+    <tr>
+      <th>ID</th><th>Planting</th><th>Task</th><th>Due Date</th>
+      <th>Status</th><th>Source</th><th>Skip Reason</th><th>Assigned To</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody id="rows"></tbody>
+</table>
+</div>
+
+<script>
+const API = '/api/care-tasks';
+const $ = id => document.getElementById(id);
+let tasks = [];
+let editingId = null;
+let busy = false;
+
+function show(message, isError = false) {
+  $('msg').textContent = message || '';
+  $('msg').className = isError ? 'error' : 'ok';
+}
+
+async function call(url, options = {}) {
+  const response = await fetch(url, options);
+  let result;
+
+  try {
+    result = await response.json();
+  } catch {
+    throw new Error('The server returned an unreadable response.');
+  }
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.message || 'Request failed.');
+  }
+
+  return result;
+}
+
+function displayDate(value) {
+  if (!value) return '-';
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return String(value).slice(0, 10);
+  }
+
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Manila',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date);
+}
+
+function addCell(row, value) {
+  const cell = document.createElement('td');
+  cell.textContent = value == null || value === '' ? '-' : value;
+  row.appendChild(cell);
+  return cell;
+}
+
+function render() {
+  const body = $('rows');
+  body.replaceChildren();
+
+  if (!tasks.length) {
+    const row = document.createElement('tr');
+    const cell = addCell(row, 'No care tasks found.');
+    cell.colSpan = 9;
+    body.appendChild(row);
+    return;
+  }
+
+  tasks.forEach(task => {
+    const row = document.createElement('tr');
+    addCell(row, task.task_id);
+    addCell(row, task.planting_id);
+    addCell(row, task.task_type);
+    addCell(row, displayDate(task.due_date));
+    addCell(row, task.status);
+    addCell(row, task.source);
+    addCell(row, task.skip_reason);
+    addCell(row, task.assigned_to);
+
+    const actions = addCell(row, '');
+    const edit = document.createElement('button');
+    edit.textContent = 'Edit';
+    edit.onclick = () => beginEdit(task.task_id);
+    actions.appendChild(edit);
+
+    const remove = document.createElement('button');
+    remove.textContent = 'Delete';
+    remove.className = 'del';
+    remove.onclick = () => deleteTask(task.task_id);
+    actions.appendChild(remove);
+
+    body.appendChild(row);
+  });
+}
+
+async function loadTasks() {
+  $('loading').style.display = 'block';
+  try {
+    const result = await call(API);
+    tasks = result.data;
+    render();
+  } catch (error) {
+    show(error.message, true);
+  } finally {
+    $('loading').style.display = 'none';
+  }
+}
+
+function resetForm() {
+  editingId = null;
+  $('taskForm').reset();
+  $('formTitle').textContent = 'Add Care Task';
+  $('saveBtn').textContent = 'Add Care Task';
+  $('cancelBtn').hidden = true;
+  $('status').value = 'Pending';
+  $('source').value = 'Manual';
+}
+
+function beginEdit(id) {
+  const task = tasks.find(item => Number(item.task_id) === Number(id));
+  if (!task) return;
+
+  editingId = id;
+  $('planting').value = task.planting_id;
+  $('type').value = task.task_type;
+  $('dueDate').value = displayDate(task.due_date);
+  $('status').value = task.status;
+  $('source').value = task.source;
+  $('reason').value = task.skip_reason || '';
+  $('assigned').value = task.assigned_to ?? '';
+  $('formTitle').textContent = 'Edit Care Task #' + id;
+  $('saveBtn').textContent = 'Save Changes';
+  $('cancelBtn').hidden = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+$('cancelBtn').addEventListener('click', resetForm);
+
+$('taskForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (busy) return;
+
+  const body = {
+    planting_id: $('planting').value,
+    task_type: $('type').value,
+    due_date: $('dueDate').value,
+    status: $('status').value,
+    source: $('source').value,
+    skip_reason: $('reason').value.trim(),
+    assigned_to: $('assigned').value || null
+  };
+
+  if (body.status === 'Skipped' && !body.skip_reason) {
+    show('A reason is required when a task is skipped.', true);
+    $('reason').focus();
+    return;
+  }
+
+  busy = true;
+  $('saveBtn').disabled = true;
+
+  try {
+    if (editingId === null) {
+      await call(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      show('Care task added successfully.');
+    } else {
+      await call(API + '/' + editingId, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      show('Care task updated successfully.');
+    }
+
+    resetForm();
+    await loadTasks();
+  } catch (error) {
+    show(error.message, true);
+  } finally {
+    busy = false;
+    $('saveBtn').disabled = false;
+  }
+});
+
+async function deleteTask(id) {
+  if (!confirm('Delete care task #' + id + '? This cannot be undone.')) return;
+
+  try {
+    const result = await call(API + '/' + id, { method: 'DELETE' });
+    show(result.message);
+    if (editingId === id) resetForm();
+    await loadTasks();
+  } catch (error) {
+    show(error.message, true);
+  }
+}
+
+resetForm();
+loadTasks();
+</script>
+</body>
+</html>
