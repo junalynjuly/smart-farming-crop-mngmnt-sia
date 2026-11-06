@@ -33,6 +33,7 @@ const growthStageRoutes = require('./src/routes/growthStageRoutes');
 app.use('/api/growth-stages', growthStageRoutes);
 
 app.use('/api/thresholds', require('./src/routes/thresholdRoutes'));
+app.use('/api/care-tasks', require('./src/routes/careTaskRoutes'));
 
 // Home route
 app.get('/', (req, res) => {
