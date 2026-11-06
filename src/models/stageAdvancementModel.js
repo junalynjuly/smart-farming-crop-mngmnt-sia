@@ -32,7 +32,8 @@ async function advanceStages() {
         ]);
 
         const [prediction] = await db.query(`
-            SELECT DATE_ADD(?, INTERVAL ? DAY) AS predicted_harvest_date
+            SELECT DATE_ADD(?, INTERVAL ? DAY)
+                AS predicted_harvest_date
         `, [
             planting.planting_date,
             planting.days_to_maturity
@@ -50,12 +51,24 @@ async function advanceStages() {
                 prediction[0].predicted_harvest_date,
                 planting.planting_id
             ]);
+        } else {
+            await db.query(`
+                UPDATE plantings
+                SET expected_harvest_date = ?
+                WHERE planting_id = ?
+                  AND status = 'Active'
+            `, [
+                prediction[0].predicted_harvest_date,
+                planting.planting_id
+            ]);
         }
 
         results.push({
             planting_id: planting.planting_id,
             days_growing: planting.days_growing,
-            current_stage: stages.length ? stages[0].stage_name : null,
+            current_stage: stages.length > 0
+                ? stages[0].stage_name
+                : null,
             predicted_harvest_date:
                 prediction[0].predicted_harvest_date,
             stage_configured: stages.length > 0
