@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Growth Stages</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stage-page { max-width: 1100px; margin: 30px auto; padding: 20px; }
+        .stage-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .stage-form label { display: block; margin-bottom: 5px; }
+        .stage-form input { width: 100%; box-sizing: border-box; padding: 9px; }
+        .stage-form button, .stage-actions button { padding: 9px 12px; cursor: pointer; }
+        .stage-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        .stage-table th, .stage-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        .stage-table th { background: #eaf3e5; }
+        .stage-message { margin: 12px 0; }
+        .stage-actions { display: flex; gap: 6px; }
+        @media (max-width: 650px) { .stage-table { font-size: 12px; } .stage-table th, .stage-table td { padding: 5px; } }
+    </style>
+</head>
+<body>
+    <main class="stage-page">
+        <h1>Crop Growth Stages</h1>
+        <p>Manage the growth stages configured for each crop.</p>
+
+        <p><a href="index.html">Home</a> | <a href="care-tasks.html">Care Tasks</a></p>
+
+        <h2 id="formTitle">Add Growth Stage</h2>
+        <form id="stageForm" class="stage-form">
+            <input type="hidden" id="stageId">
+
+            <div>
+                <label for="cropId">Crop ID</label>
+                <input type="number" id="cropId" min="1" required>
+            </div>
+            <div>
+                <label for="stageName">Stage Name</label>
+                <input type="text" id="stageName" required>
+            </div>
+            <div>
+                <label for="stageOrder">Stage Order</label>
+                <input type="number" id="stageOrder" min="1" required>
+            </div>
+            <div>
+                <label for="startDay">Start Day</label>
+                <input type="number" id="startDay" min="0" required>
+            </div>
+            <div>
+                <label for="endDay">End Day</label>
+                <input type="number" id="endDay" min="0" required>
+            </div>
+            <div>
+                <button type="submit" id="saveButton">Add Stage</button>
+                <button type="button" id="cancelButton" hidden>Cancel Edit</button>
+            </div>
+        </form>
+
+        <p id="stageMessage" class="stage-message" role="status"></p>
+
+        <h2>Existing Growth Stages</h2>
+        <div style="overflow-x:auto">
+            <table class="stage-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Crop ID</th>
+                        <th>Stage Name</th>
+                        <th>Order</th>
+                        <th>Start Day</th>
+                        <th>End Day</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="stageRows">
+                    <tr><td colspan="7">Loading stages...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = '/api/growth-stages';
+        const form = document.getElementById('stageForm');
+        const rows = document.getElementById('stageRows');
+        const message = document.getElementById('stageMessage');
+
+        function showMessage(text, isError = false) {
+            message.textContent = text;
+            message.style.color = isError ? 'red' : 'green';
+        }
+
+        function resetForm() {
+            form.reset();
+            document.getElementById('stageId').value = '';
+            document.getElementById('formTitle').textContent = 'Add Growth Stage';
+            document.getElementById('saveButton').textContent = 'Add Stage';
+            document.getElementById('cancelButton').hidden = true;
+        }
+
+        async function loadStages() {
+            rows.innerHTML = '<tr><td colspan="7">Loading stages...</td></tr>';
+
+            try {
+                const response = await fetch(API_URL);
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || 'Could not load growth stages.');
+                }
+
+                rows.replaceChildren();
+
+                if (result.data.length === 0) {
+                    rows.innerHTML = '<tr><td colspan="7">No growth stages found.</td></tr>';
+                    return;
+                }
+
+                result.data.forEach(stage => {
+                    const row = document.createElement('tr');
+
+                    [
+                        stage.stage_id,
+                        stage.crop_id,
+                        stage.stage_name,
+                        stage.stage_order,
+                        stage.start_day,
+                        stage.end_day
+                    ].forEach(value => {
+                        const cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+
+                    const actions = document.createElement('td');
+                    actions.className = 'stage-actions';
+
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.type = 'button';
+                    editButton.addEventListener('click', () => editStage(stage));
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.type = 'button';
+                    deleteButton.addEventListener('click', () => deleteStage(stage.stage_id));
+
+                    actions.append(editButton, deleteButton);
+                    row.appendChild(actions);
+                    rows.appendChild(row);
+                });
+            } catch (error) {
+                rows.innerHTML = '<tr><td colspan="7">Failed to load stages.</td></tr>';
+                showMessage(error.message, true);
+            }
+        }
+
+        function editStage(stage) {
+            document.getElementById('stageId').value = stage.stage_id;
+            document.getElementById('cropId').value = stage.crop_id;
+            document.getElementById('stageName').value = stage.stage_name;
+            document.getElementById('stageOrder').value = stage.stage_order;
+            document.getElementById('startDay').value = stage.start_day;
+            document.getElementById('endDay').value = stage.end_day;
+            document.getElementById('formTitle').textContent = 'Edit Growth Stage';
+            document.getElementById('saveButton').textContent = 'Save Changes';
+            document.getElementById('cancelButton').hidden = false;
+            showMessage('Editing stage ID ' + stage.stage_id);
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        form.addEventListener('submit', async event => {
+            event.preventDefault();
+
+            const id = document.getElementById('stageId').value;
+            const data = {
+                crop_id: Number(document.getElementById('cropId').value),
+                stage_name: document.getElementById('stageName').value.trim(),
+                stage_order: Number(document.getElementById('stageOrder').value),
+                start_day: Number(document.getElementById('startDay').value),
+                end_day: Number(document.getElementById('endDay').value)
+            };
+
+            if (data.start_day > data.end_day) {
+                showMessage('Start Day cannot be greater than End Day.', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(id ? `${API_URL}/${id}` : API_URL, {
+                    method: id ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || 'Could not save growth stage.');
+                }
+
+                showMessage(id ? 'Growth stage updated.' : 'Growth stage added.');
+                resetForm();
+                await loadStages();
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        });
+
+        async function deleteStage(id) {
+            if (!confirm(`Delete growth stage ID ${id}? This cannot be undone.`)) return;
+
+            try {
+                const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(result.message || 'Could not delete growth stage.');
+                }
+
+                showMessage('Growth stage deleted.');
+                await loadStages();
+            } catch (error) {
+                showMessage(error.message, true);
+            }
+        }
+
+        document.getElementById('cancelButton').addEventListener('click', resetForm);
+        loadStages();
+    </script>
+</body>
+</html>+
