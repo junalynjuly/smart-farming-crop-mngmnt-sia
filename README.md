@@ -5,14 +5,6 @@
 Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 \# Smart Farming and Crop Management System (SIA)
 
-
-
-\## Group members
-
-Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
-
-
-
 \## Ownership matrix
 
 | Member | GitHub username | Tables | Endpoints | Join report endpoint and type | Feature role |
