@@ -15,7 +15,7 @@ async function getCurrentStages() {
             ON p.field_id = f.field_id
         INNER JOIN crops c
             ON p.crop_id = c.crop_id
-        INNER JOIN crop_growth_stages s
+        LEFT JOIN crop_growth_stages s
             ON p.current_stage_id = s.stage_id
             AND p.crop_id = s.crop_id
         WHERE p.status = 'Active'
