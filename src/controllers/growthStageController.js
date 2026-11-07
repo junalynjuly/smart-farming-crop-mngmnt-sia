@@ -6,14 +6,16 @@ async function getAllGrowthStages(req, res) {
         res.status(200).json({
             success: true,
             data: results
-        });
-    } catch (err) {
-        res.status(500).json({
-            success: false,
-            message: 'Failed to retrieve growth stages.',
-            error: err.message
-        });
+        });} catch (err) {
+    if (err.code === 'ER_NO_SUCH_TABLE') {
+        return res.status(200).json({ success: true, data: [] });
     }
+    res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve growth stages.',
+        error: err.message
+    });
+}
 }
 
 async function createGrowthStage(req, res) {

@@ -10,13 +10,14 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // Existing routes
-const pestWeatherRouter = require('./routes/masterDataRoutes');
+const masterDataRouter = require('./routes/masterDataRoutes');
+app.use('/', masterDataRouter);
 // Use Pest Reports and Weather Logs routes
 const pestWeatherRouter = require('./routes/pestWeather');
 app.use('/', pestWeatherRouter);
 
 // Test route
-app.use('/', pestWeatherRouter);
+app.use('/', masterDataRouter);
 
 const alertRouter = require('./routes/alertRoutes');
 app.use('/', alertRouter);

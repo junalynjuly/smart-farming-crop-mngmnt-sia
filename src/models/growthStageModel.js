@@ -2,12 +2,17 @@
 const db = require('../config/db');
 
 async function getAllGrowthStages() {
-    const [rows] = await db.query(`
-        SELECT *
-        FROM crop_growth_stages
-        ORDER BY crop_id, stage_order
-    `);
-    return rows;
+    try {
+        const [rows] = await db.query(
+            'SELECT * FROM crop_growth_stages ORDER BY crop_id, stage_order'
+        );
+        return rows;
+    } catch (err) {
+        if (err.code === 'ER_NO_SUCH_TABLE') {
+            return [];
+        }
+        throw err;
+    }
 }
 
 async function createGrowthStage(data) {
