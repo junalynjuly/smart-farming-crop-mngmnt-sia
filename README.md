@@ -34,14 +34,6 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 3\. npm install, then npm start.
 
-## Rebutazo — Individual Responsibilities
-
-- Growth Stages management
-- Crop Thresholds management
-- Growth-stage update functionality
-- Harvest prediction functionality
-- Growth Stages frontend screen
-- Thresholds frontend screen
 <<<<<<< HEAD
 =======
 >>>>>>> c4c49d8 (Save local schema and express adjustments)
