@@ -31,6 +31,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 2\. Copy .env.example to .env and fill in your values.
 
 3\. npm install, then npm start.
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 =======
@@ -38,3 +39,5 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 >>>>>>> c162918 (Save local schema and express adjustments)
 =======
 >>>>>>> origin/main
+=======
+>>>>>>> main

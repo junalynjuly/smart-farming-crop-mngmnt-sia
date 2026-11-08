@@ -38,12 +38,12 @@ function create(d) {
     const [f] = await conn.query('SELECT status FROM fields WHERE field_id = ? FOR UPDATE', [d.field_id]);
     if (!f.length) throw new Error('FIELD_NOT_FOUND');
     if (f[0].status === 'Planted') throw new Error('FIELD_BUSY');
-    const [c] = await conn.query('SELECT growth_duration_days FROM crops WHERE crop_id = ?', [d.crop_id]);
+    const [c] = await conn.query('SELECT days_to_maturity FROM crops WHERE crop_id = ?', [d.crop_id]);
     if (!c.length) throw new Error('CROP_NOT_FOUND');
     const [r] = await conn.query(
       `INSERT INTO plantings (field_id, crop_id, planted_by, planting_date, expected_harvest_date, status)
        VALUES (?, ?, ?, ?, DATE_ADD(?, INTERVAL ? DAY), 'Active')`,
-      [d.field_id, d.crop_id, d.planted_by || null, d.planting_date, d.planting_date, c[0].growth_duration_days]);
+      [d.field_id, d.crop_id, d.planted_by || null, d.planting_date, d.planting_date, c[0].days_to_maturity]);
     await conn.query("UPDATE fields SET status = 'Planted' WHERE field_id = ?", [d.field_id]);
     return r.insertId;
   });
@@ -79,6 +79,6 @@ module.exports = { getAll, getById, create, update, remove };
 
 module.exports.getOptions = async () => {
   const [fields] = await pool.query('SELECT field_id, field_name, status FROM fields ORDER BY field_name');
-  const [crops] = await pool.query('SELECT crop_id, crop_name, growth_duration_days FROM crops ORDER BY crop_name');
+  const [crops] = await pool.query('SELECT crop_id, crop_name, days_to_maturity FROM crops ORDER BY crop_name');
   return { fields, crops };
 };

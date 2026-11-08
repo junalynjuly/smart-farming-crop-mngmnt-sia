@@ -41,8 +41,12 @@ app.use('/api/growth-stages', growthStageRoutes);
 const plantingRoutes = require('./src/routes/plantingRoutes');
 app.use('/crops', plantingRoutes);
 app.use('/api/thresholds', require('./src/routes/thresholdRoutes'));
+<<<<<<< HEAD
 const pestReportRoutes = require('./src/routes/pestReportsroutes');
 app.use('/api/pest-reports', pestReportRoutes);
+=======
+app.use('/api/care-tasks', require('./src/routes/careTaskRoutes'));
+>>>>>>> main
 
 const weatherRoutes = require('./src/routes/weatherRoutes');
 app.use('/', weatherRoutes);
