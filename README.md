@@ -24,8 +24,6 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 | F Riofrir | franklinriofrir16-bot | weather_logs, pest_reports | Pest_report CRUD screen, weather_logs entry, Dashboard | Pest report count per crop (RIGHT JOIN) | Reports and Dashboard |
 
 
-
-
 \## How to run
 
 1\. Run schema.sql in MySQL Workbench.
