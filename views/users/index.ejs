@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Users Management</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Users & Role Management</h1>
+
+        
+        <section>
+            <h2>Add New User</h2>
+            <form action="/users/create" method="POST">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="text" name="role" placeholder="Role (e.g. Admin, Farmer)" required>
+                <input type="number" name="farm_id" placeholder="Farm ID">
+                <button type="submit">Create User</button>
+            </form>
+        </section>
+
+        
+        <section>
+            <h2>User List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Farm ID</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.id %></td>
+                            <td><%= user.username %></td>
+                            <td><%= user.role %></td>
+                            <td><%= user.farm_id %></td>
+                            <td>
+                                
+                                <form action="/users/delete/<%= user.id %>" method="POST" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
