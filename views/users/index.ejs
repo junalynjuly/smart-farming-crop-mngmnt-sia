@@ -2,26 +2,216 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Users Management</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Users & Role Management - AgriVance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: url('/farm-bg.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #2c352d;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, #1b3022, #112217);
+            color: #f4f6f3;
+            padding: 28px 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(27, 48, 34, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-banner img {
+            height: 55px;
+            object-fit: contain;
+        }
+
+        .header-text h4 {
+            font-size: 11px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #a3b899;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .header-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        section {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            border: 1px solid #e1e7df;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        h2 {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1b3022;
+            letter-spacing: -0.01em;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            gap: 12px;
+        }
+
+        @media (max-width: 768px) {
+            form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        input, select {
+            background: #f9fbf8;
+            border: 1px solid #d4decf;
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #2c352d;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #3b6d48;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(59, 109, 72, 0.12);
+        }
+
+        input::placeholder {
+            color: #8a9a88;
+            font-weight: 400;
+        }
+
+        button[type="submit"] {
+            background: #274d32;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: -0.01em;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(39, 77, 50, 0.2);
+        }
+
+        button[type="submit"]:hover {
+            background: #32613f;
+            box-shadow: 0 6px 16px rgba(39, 77, 50, 0.3);
+        }
+
+        button[type="submit"]:active {
+            transform: scale(0.98);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            margin-top: 4px;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #edf2ec;
+            font-size: 14px;
+        }
+
+        th {
+            font-weight: 600;
+            color: #5c6e5e;
+            background: #f9fbf8;
+            letter-spacing: -0.01em;
+        }
+
+        tr:hover td {
+            background: rgba(250, 252, 249, 0.8);
+        }
+
+        .badge {
+            background: #e8f2ea;
+            color: #2e6b3e;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-delete {
+            background: #fdf2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2;
+            border-color: #fca5a5;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Users & Role Management</h1>
-
         
+        <div class="header-banner">
+            <img src="/logo.png" alt="AgriVance Logo">
+            <div class="header-text">
+                <h4>AgriVance Smart Farming System</h4>
+                <h1>Users & Role Management</h1>
+            </div>
+        </div>
+
         <section>
             <h2>Add New User</h2>
             <form action="/users/create" method="POST">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <input type="text" name="role" placeholder="Role (e.g. Admin, Farmer)" required>
+                <select name="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Farmer">Farmer</option>
+                </select>
                 <input type="number" name="farm_id" placeholder="Farm ID">
                 <button type="submit">Create User</button>
             </form>
         </section>
 
-        
+        <!-- User List Section -->
         <section>
             <h2>User List</h2>
             <table>
@@ -39,12 +229,11 @@
                         <tr>
                             <td><%= user.id %></td>
                             <td><%= user.username %></td>
-                            <td><%= user.role %></td>
+                            <td><span class="badge"><%= user.role %></span></td>
                             <td><%= user.farm_id %></td>
                             <td>
-                                
                                 <form action="/users/delete/<%= user.id %>" method="POST" style="display:inline;">
-                                    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
                                 </form>
                             </td>
                         </tr>
