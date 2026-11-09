@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Edit Farm Input: <%= input.input_name %></h4>
+        </div>
+        <div class="card-body">
+            <% if (locals.error && error) { %>
+                <div class="alert alert-danger"><%= error %></div>
+            <% } %>
+
+            <form action="/farm-inputs/edit/<%= input.input_id %>" method="POST">
+                <div class="mb-3">
+                    <label for="input_name" class="form-label">Input Name *</label>
+                    <input type="text" class="form-control" id="input_name" name="input_name" value="<%= input.input_name %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" name="category" value="<%= input.category %>">
+                </div>
+
+                <div class="mb-3">
+                    <label for="unit" class="form-label">Unit of Measurement *</label>
+                    <input type="text" class="form-control" id="unit" name="unit" value="<%= input.unit %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="stock_quantity" class="form-label">Stock Quantity *</label>
+                    <input type="number" step="0.01" min="0" class="form-control" id="stock_quantity" name="stock_quantity" value="<%= input.stock_quantity %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="reorder_level" class="form-label">Reorder Level *</label>
+                    <input type="number" step="0.01" min="0" class="form-control" id="reorder_level" name="reorder_level" value="<%= input.reorder_level %>" required>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="/farm-inputs" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Update Input</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,59 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Crops Management</h2>
+        <a href="/crops/add" class="btn btn-primary">+ Add New Crop</a>
+    </div>
+
+    <% if (locals.error && error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Crop Name</th>
+                            <th>Category</th>
+                            <th>Days to Maturity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (crops && crops.length > 0) { %>
+                            <% crops.forEach(crop => { %>
+                                <tr>
+                                    <td><%= crop.crop_id %></td>
+                                    <td><strong><%= crop.crop_name %></strong></td>
+                                    <td>
+                                        <span class="badge bg-secondary"><%= crop.category %></span>
+                                    </td>
+                                    <td><%= crop.days_to_maturity %> days</td>
+                                    <td>
+                                        <a href="/crops/edit/<%= crop.crop_id %>" class="btn btn-sm btn-outline-warning">Edit</a>
+                                        <form action="/crops/delete/<%= crop.crop_id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this crop?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No crops recorded yet.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
