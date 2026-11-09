@@ -1,12 +1,9 @@
-\# Smart Farming and Crop Management System (SIA)
-
-
+# Smart Farming and Crop Management System (SIA)
 
 \## Group members
 
-Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
-
-
+Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
+\# Smart Farming and Crop Management System (SIA)
 
 \## Ownership matrix
 
@@ -14,19 +11,17 @@ Singuit, Silverio, Quisel, Rebutazo, Rio, Riofrir
 
 |---|---|---|---|---|---|
 
-| A Singuit | | roles, farms, users | | | |
+| A Singuit | johnmarabubakar-afk | roles, farms, users | Login, Users CRUD, roles and farm lists |Users with role and farm (INNER) | Core: login, roles, shared layout, DB connection |
 
-| B Silverio | MarsWood2007 | crops, fields, farm_inputs | Crops CRUD, Fields CRUD, Farm Inputs | Fields with no active planting (LEFT JOIN) | Master data |
+| B Silvano | | crops, fields, farm\_inputs | | | |
 
-| C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (LEFT JOIN) | Transactions |
+| C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (INNER JOIN) | Transactions |
 
-| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD, Growth Stages, Thresholds | Current stage per planting (LEFT JOIN) | Unique feature (rules): stage advance and harvest prediction |
+| D Rebutazo | junalynjuly | crop_growth_stages, crop_thresholds, care_tasks | Care Tasks CRUD, Growth Stages, Thresholds | Current stage per planting (INNER JOIN) | Unique feature (rules): stage advance and harvest prediction |
 
 | E Rio | carmelario08 | sensor_readings, alerts, audit_logs | Alerts CRUD screen, sensor readings entry, audit log view | Fields vs weather coverage gaps (FULL OUTER via UNION of LEFT and RIGHT) | Unique feature: threshold alerts and auto-created tasks, audit |
 
 | F Riofrir | franklinriofrir16-bot | weather_logs, pest_reports | Pest_report CRUD screen, weather_logs entry, Dashboard | Pest report count per crop (RIGHT JOIN) | Reports and Dashboard |
-
-
 
 
 \## How to run

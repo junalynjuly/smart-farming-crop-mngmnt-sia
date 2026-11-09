@@ -2,46 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Smart Farming System - Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 40px; }
-        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { color: #2e7d32; text-align: center; margin-bottom: 10px; }
-        p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
-        .stats { display: flex; justify-content: space-around; margin-bottom: 30px; text-align: center; }
-        .stat-box { background: #e8f5e9; padding: 15px; border-radius: 6px; width: 30%; }
-        .stat-box h3 { margin: 0; color: #2e7d32; font-size: 14px; }
-        .stat-box p { margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #333; }
-        .nav-links { display: flex; flex-direction: column; gap: 15px; }
-        .nav-links a { background: #4caf50; color: white; padding: 15px; text-decoration: none; text-align: center; border-radius: 6px; font-weight: bold; transition: background 0.2s; }
-        .nav-links a:hover { background: #388e3c; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming System Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Smart Farming System</h1>
-        <p class="subtitle">Member C Frontend Management Portal</p>
-        
-        <div class="stats">
-            <div class="stat-box">
-                <h3>Plantings</h3>
-                <p><%= plantingCount %></p>
-            </div>
-            <div class="stat-box">
-                <h3>Harvests</h3>
-                <p><%= harvestCount %></p>
-            </div>
-            <div class="stat-box">
-                <h3>Inputs</h3>
-                <p><%= inputCount %></p>
-            </div>
+<body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">Smart Farming System</a>
         </div>
+    </nav>
 
-        <div class="nav-links">
-            <a href="/plantings">Manage Plantings</a>
-            <a href="/harvests">Manage Harvests</a>
-            <a href="/input-usage">Manage Input Usage</a>
-            <a href="/reports/plantings-harvests">View Plantings & Harvest Report (LEFT JOIN)</a>
+    <div class="container">
+        <h2 class="mb-4">System Dashboard</h2>
+
+        <div class="row">
+            <!-- Pest Reports Card -->
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100 border-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-success">Pest Reports & Monitoring</h5>
+                        <p class="card-text text-muted">Log pest sightings, track severity levels, and review field health notes.</p>
+                        <a href="/api/pest-reports" class="btn btn-success">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather Logs Card -->
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100 border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Weather Logs</h5>
+                        <p class="card-text text-muted">Track rainfall, temperature readings, and environmental conditions.</p>
+                        <a href="/weather" class="btn btn-primary">Open Weather Logs</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Overview Card -->
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100 border-secondary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-secondary">Crops & Fields</h5>
+                        <p class="card-text text-muted">View field allocations, planting stages, and crop growth metrics.</p>
+                        <a href="/crops" class="btn btn-secondary">View Crops</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

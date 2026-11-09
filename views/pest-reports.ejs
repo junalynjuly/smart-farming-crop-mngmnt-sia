@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pest Reports & Weather Logs - SIA</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container my-5">
+        <h2 class="mb-4 text-success">Pest Reports & Weather Monitoring</h2>
+        
+        <!-- Pest Report Form -->
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Log New Pest Sighting</h5>
+            </div>
+            <div class="card-body">
+                <form action="/pest-reports/add" method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Pest Name / Type</label>
+                            <input type="text" name="pest_type" class="form-control" required placeholder="e.g., Armyworm, Stem Borer">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Severity Level</label>
+                            <select name="severity" class="form-select">
+                                <option value="Low">Low</option>
+                                <option value="Moderate">Moderate</option>
+                                <option value="High">High</option>
+                                <option value="Severe">Severe</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Notes / Action Taken</label>
+                            <textarea name="notes" class="form-control" rows="2" placeholder="Describe affected area and treatment applied..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success">Submit Report</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reports Table -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Recent Pest Reports</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Pest Type</th>
+                            <th>Severity</th>
+                            <th>Notes</th>
+                            <th>Date Logged</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (typeof reports !== 'undefined' && reports.length > 0) { %>
+                            <% reports.forEach((report, index) => { %>
+                                <tr>
+                                    <td><%= index + 1 %></td>
+                                    <td><%= report.pest_type %></td>
+                                    <td><span class="badge bg-warning text-dark"><%= report.severity %></span></td>
+                                    <td><%= report.notes %></td>
+                                    <td><%= report.created_at %></td>
+        s                        </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="5" class="text-center py-3 text-muted">No pest reports recorded yet.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
