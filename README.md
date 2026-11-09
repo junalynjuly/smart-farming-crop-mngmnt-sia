@@ -13,7 +13,7 @@ Singuit, Silvano, Quisel, Rebutazo, Rio, Riofrir
 
 | A Singuit | johnmarabubakar-afk | roles, farms, users | Login, Users CRUD, roles and farm lists |Users with role and farm (INNER) | Core: login, roles, shared layout, DB connection |
 
-| B Silvano | | crops, fields, farm\_inputs | | | |
+| B Silverio | MarsWood2007 | crops, fields, farm_inputs | Fields CRUD, crops, farm inputs | Fields with no active planting (LEFT JOIN) | Master Data |
 
 | C Quisel | GalaxyTamer | plantings, harvests, input_usage | Plantings CRUD, harvest entry, input usage entry | Plantings with crop, field and input totals (INNER JOIN) | Transactions |
 
