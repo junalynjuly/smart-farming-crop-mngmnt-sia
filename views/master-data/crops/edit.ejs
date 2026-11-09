@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0">Edit Crop: <%= crop.crop_name %></h4>
+        </div>
+        <div class="card-body">
+            <% if (locals.error && error) { %>
+                <div class="alert alert-danger"><%= error %></div>
+            <% } %>
+
+            <form action="/crops/edit/<%= crop.crop_id %>" method="POST">
+                <div class="mb-3">
+                    <label for="crop_name" class="form-label">Crop Name *</label>
+                    <input type="text" class="form-control" id="crop_name" name="crop_name" value="<%= crop.crop_name %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category *</label>
+                    <input type="text" class="form-control" id="category" name="category" value="<%= crop.category %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="days_to_maturity" class="form-label">Days to Maturity *</label>
+                    <input type="number" min="1" class="form-control" id="days_to_maturity" name="days_to_maturity" value="<%= crop.days_to_maturity %>" required>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="/crops" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Update Crop</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

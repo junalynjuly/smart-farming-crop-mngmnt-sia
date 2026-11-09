@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const  db  = require('../src/config/db');
 
-// --- PEST REPORTS ---
 router.get('/pest-reports', (req, res) => {
     db.query('SELECT * FROM pest_reports', (err, results) => {
         if (err) return res.status(500).send(err.message);
@@ -22,7 +21,6 @@ router.post('/pest-reports/add', (req, res) => {
     );
 });
 
-// --- WEATHER LOGS ---
 router.get('/weather-logs', (req, res) => {
     db.query('SELECT * FROM weather_logs', (err, results) => {
         if (err) return res.status(500).send(err.message);
@@ -41,7 +39,7 @@ router.post('/weather-logs/add', (req, res) => {
         }
     );
 });
-// --- DASHBOARD & PEST REPORT COUNT (RIGHT JOIN) ---
+
 router.get('/dashboard', async (req, res) => {
     const sql = `
         SELECT c.crop_name, COUNT(pr.pest_id) AS pest_reports_count

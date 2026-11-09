@@ -1,0 +1,70 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Farm Inputs Inventory</h2>
+        <a href="/farm-inputs/add" class="btn btn-primary">+ Add New Input</a>
+    </div>
+
+    <% if (locals.error && error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Input Name</th>
+                            <th>Category</th>
+                            <th>Unit</th>
+                            <th>Stock Quantity</th>
+                            <th>Reorder Level</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (inputs && inputs.length > 0) { %>
+                            <% inputs.forEach(input => { %>
+                                <% const isLowStock = input.stock_quantity <= input.reorder_level; %>
+                                <tr class="<%= isLowStock ? 'table-warning' : '' %>">
+                                    <td><%= input.input_id %></td>
+                                    <td><strong><%= input.input_name %></strong></td>
+                                    <td><%= input.category %></td>
+                                    <td><%= input.unit %></td>
+                                    <td><%= input.stock_quantity %></td>
+                                    <td><%= input.reorder_level %></td>
+                                    <td>
+                                        <% if (isLowStock) { %>
+                                            <span class="badge bg-danger">Low Stock</span>
+                                        <% } else { %>
+                                            <span class="badge bg-success">Adequate</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/farm-inputs/edit/<%= input.input_id %>" class="btn btn-sm btn-outline-warning">Edit</a>
+                                        <form action="/farm-inputs/delete/<%= input.input_id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this farm input?');">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">No farm inputs recorded yet.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>
