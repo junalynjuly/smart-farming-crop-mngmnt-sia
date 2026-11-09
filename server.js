@@ -42,6 +42,36 @@ app.get('/', (req, res) => {
     });
 });
 
+
+// Frontend View Route for Plantings
+app.get('/plantings', (req, res) => {
+    res.render('plantings');
+});
+
+
+// Frontend View Route for Harvests
+app.get('/harvests', (req, res) => {
+    res.render('harvests');
+});
+
+
+// Frontend View Route for Input Usage
+app.get('/input-usage', (req, res) => {
+    res.render('input_usage');
+});
+
+
+// Frontend View Route for Plantings-Harvest Report
+app.get('/reports/plantings-harvests', (req, res) => {
+    res.render('plantings_harvest_report');
+});
+
+
+// Frontend Dashboard Route
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard');
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
