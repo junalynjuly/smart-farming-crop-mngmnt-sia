@@ -1,0 +1,10 @@
+require('dotenv').config();
+const express = require('express');
+const app = express();
+app.use(express.json());
+app.use(express.static('public'));
+app.use('/api/plantings', require('./src/routes/plantingRoutes'));
+app.use('/api/harvests', require('./src/routes/harvestRoutes'));
+app.use('/api/input-usage', require('./src/routes/inputUsageRoutes'));
+app.use('/api/reports', require('./src/routes/reportRoutes'));
+app.listen(3000, () => console.log('test server on 3000'));

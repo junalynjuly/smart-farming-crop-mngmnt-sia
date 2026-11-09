@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Farming System - Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 40px; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #2e7d32; text-align: center; margin-bottom: 10px; }
+        p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        .stats { display: flex; justify-content: space-around; margin-bottom: 30px; text-align: center; }
+        .stat-box { background: #e8f5e9; padding: 15px; border-radius: 6px; width: 30%; }
+        .stat-box h3 { margin: 0; color: #2e7d32; font-size: 14px; }
+        .stat-box p { margin: 5px 0 0; font-size: 20px; font-weight: bold; color: #333; }
+        .nav-links { display: flex; flex-direction: column; gap: 15px; }
+        .nav-links a { background: #4caf50; color: white; padding: 15px; text-decoration: none; text-align: center; border-radius: 6px; font-weight: bold; transition: background 0.2s; }
+        .nav-links a:hover { background: #388e3c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Smart Farming System</h1>
+        <p class="subtitle">Member C Frontend Management Portal</p>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <h3>Plantings</h3>
+                <p><%= plantingCount %></p>
+            </div>
+            <div class="stat-box">
+                <h3>Harvests</h3>
+                <p><%= harvestCount %></p>
+            </div>
+            <div class="stat-box">
+                <h3>Inputs</h3>
+                <p><%= inputCount %></p>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="/plantings">Manage Plantings</a>
+            <a href="/harvests">Manage Harvests</a>
+            <a href="/input-usage">Manage Input Usage</a>
+            <a href="/reports/plantings-harvests">View Plantings & Harvest Report (LEFT JOIN)</a>
+        </div>
+    </div>
+</body>
+</html>

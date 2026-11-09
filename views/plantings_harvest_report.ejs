@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plantings & Harvest Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        h1 { color: #2e7d32; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #4caf50; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Plantings & Harvest LEFT JOIN Report</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Planting ID</th>
+                    <th>Field ID</th>
+                    <th>Crop ID</th>
+                    <th>Planting Date</th>
+                    <th>Harvest ID</th>
+                    <th>Harvest Date</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <tr><td colspan="7" style="text-align: center;">Loading report...</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('/api/reports/plantings-harvests')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('tableBody');
+                tbody.innerHTML = '';
+                const rows = data.data || data;
+                if(rows.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No records found.</td></tr>';
+                    return;
+                }
+                rows.forEach(item => {
+                    tbody.innerHTML += `<tr>
+                        <td>${item.planting_id || ''}</td>
+                        <td>${item.field_id || ''}</td>
+                        <td>${item.crop_id || ''}</td>
+                        <td>${item.planting_date ? item.planting_date.split('T')[0] : ''}</td>
+                        <td>${item.harvest_id || 'None'}</td>
+                        <td>${item.harvest_date ? item.harvest_date.split('T')[0] : 'N/A'}</td>
+                        <td>${item.quantity || 'N/A'}</td>
+                    </tr>`;
+                });
+            })
+            .catch(err => {
+                document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" style="text-align: center; color: red;">Failed to load report.</td></tr>';
+            });
+    </script>
+</body>
+</html>
