@@ -1,0 +1,35 @@
+<%- include('partials/header', { pageTitle: 'Audit Logs' }) %>
+
+<main class="page" id="main">
+    <h1>Audit Logs</h1>
+    <p>Newest first - Read only</p>
+
+    <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Action</th>
+              <th>Table</th>
+              <th>Details</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% logs.forEach(log => { %>
+              <tr>
+                <td><%= log.log_id %></td>
+                <td><%= log.user_display %></td>
+                <td><%= log.action %></td>
+                <td><%= log.table_name %></td>
+                <td><%= log.details %></td>
+                <td><%= new Date(log.created_at).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

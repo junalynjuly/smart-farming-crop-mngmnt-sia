@@ -1,53 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Plantings Management</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
-        h1 { color: #2e7d32; text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
-        th { background-color: #4caf50; color: white; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Plantings Records</h1>
+<%- include('partials/header', { pageTitle: 'Plantings Records' }) %>
+
+<main class="page" id="main">
+    <h1>Plantings Records</h1>
+    <div class="card">
+        <h2>Add New Planting (Transactional)</h2>
+        <% if (typeof error !== 'undefined' && error) { %><div class="error"><%= error %></div><% } %>
+        <form action="/plantings/add" method="POST">
+            <div class="field">
+                <label>Select Idle Field:</label>
+                <select name="field_id" required>
+                    <option value="">-- Choose Idle Field --</option>
+                    <% idleFields.forEach(f => { %>
+                        <option value="<%= f.field_id %>"><%= f.field_name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="field">
+                <label>Select Crop:</label>
+                <select name="crop_id" required>
+                    <option value="">-- Choose Crop --</option>
+                    <% crops.forEach(c => { %>
+                        <option value="<%= c.crop_id %>"><%= c.crop_name %> (<%= c.days_to_maturity %> days)</option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="field">
+                <label>Planting Date:</label>
+                <input type="date" name="planting_date" required>
+            </div>
+            <p class="hint">* Expected harvest date is calculated automatically using crop maturity days. The planter is the logged-in user.</p>
+            <button type="submit" class="btn">Add Planting &amp; Update Field Status</button>
+        </form>
+    </div>
+
+    <h2>Existing Plantings</h2>
+    <div class="wrap">
+    <div class="table-wrap">
         <table>
             <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Field ID</th>
-                    <th>Crop ID</th>
-                    <th>Planting Date</th>
-                    <th>Status</th>
-                </tr>
+                <tr><th>ID</th><th>Field</th><th>Crop</th><th>User</th><th>Planting Date</th><th>Expected Harvest</th><th>Status</th><th>Action</th></tr>
             </thead>
-            <tbody id="tableBody">
-                <tr><td colspan="5" style="text-align: center;">Loading...</td></tr>
+            <tbody>
+            <% if (plantings && plantings.length > 0) { %>
+                <% plantings.forEach(p => { %>
+                    <tr>
+                        <td><%= p.planting_id %></td>
+                        <td><%= p.field_name %></td>
+                        <td><%= p.crop_name %></td>
+                        <td><%= p.planted_by_name || '-' %></td>
+                        <td><%= p.planting_date %></td>
+                        <td><%= p.expected_harvest_date %></td>
+                        <td><%= p.status %></td>
+                        <td>
+                            <a href="/plantings/edit/<%= p.planting_id %>">Edit</a>
+                            <form class="inline" action="/plantings/delete/<%= p.planting_id %>" method="POST" onsubmit="return confirm('Delete planting #<%= p.planting_id %>?')">
+                                <button type="submit" class="del">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr><td colspan="8">No planting records found.</td></tr>
+            <% } %>
             </tbody>
         </table>
     </div>
+    </div>
+</main>
 
-    <script>
-        fetch('/api/plantings')
-            .then(res => res.json())
-            .then(data => {
-                const tbody = document.getElementById('tableBody');
-                tbody.innerHTML = '';
-                const rows = data.data || data;
-                rows.forEach(item => {
-                    tbody.innerHTML += `<tr>
-                        <td>${item.planting_id || ''}</td>
-                        <td>${item.field_id || ''}</td>
-                        <td>${item.crop_id || ''}</td>
-                        <td>${item.planting_date ? item.planting_date.split('T')[0] : ''}</td>
-                        <td>${item.status || 'Active'}</td>
-                    </tr>`;
-                });
-            });
-    </script>
-</body>
-</html>
+<%- include('partials/footer') %>

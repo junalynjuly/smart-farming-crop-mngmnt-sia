@@ -1,0 +1,34 @@
+<%- include('partials/header', { pageTitle: 'Planting Inputs Report' }) %>
+
+<main class="page" id="main">
+    <h2>Planting Inputs Report</h2>
+    <p>Total farm inputs used per planting (INNER JOIN + LEFT JOIN).</p>
+    <div class="wrap">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th>Planting</th><th>Field</th><th>Crop</th><th>Status</th><th>Input</th><th>Total Used</th></tr>
+            </thead>
+            <tbody>
+            <% rows.forEach(r => { %>
+                <tr>
+                    <td><%= r.planting_id %></td>
+                    <td><%= r.field_name %></td>
+                    <td><%= r.crop_name %></td>
+                    <td><%= r.status %></td>
+                    <% if (r.input_name) { %>
+                        <td><%= r.input_name %></td>
+                        <td><%= r.total_used %> <%= r.unit %></td>
+                    <% } else { %>
+                        <td class="none">No inputs used</td>
+                        <td class="none">-</td>
+                    <% } %>
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</main>
+
+<%- include('partials/footer') %>

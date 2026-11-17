@@ -1,0 +1,33 @@
+<%- include('partials/header', { pageTitle: 'Edit Role' }) %>
+
+<main class="page" id="main">
+    <h2>Edit Role</h2>
+
+    <form action="/roles/<%= role.role_id %>/edit" method="POST">
+        <div class="field">
+            <label for="role_name">Role Name:</label>
+            <input
+                type="text"
+                id="role_name"
+                name="role_name"
+                value="<%= role.role_name %>"
+                required
+            >
+        </div>
+
+        <div class="field">
+            <label for="description">Description:</label>
+            <input
+                type="text"
+                id="description"
+                name="description"
+                value="<%= role.description || '' %>"
+            >
+        </div>
+
+        <button type="submit">Update Role</button>
+        <a class="btn btn--ghost" href="/roles">Cancel</a>
+    </form>
+</main>
+
+<%- include('partials/footer') %>

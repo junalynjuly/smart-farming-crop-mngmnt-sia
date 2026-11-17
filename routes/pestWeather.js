@@ -23,11 +23,13 @@ router.post('/pest-reports/add', (req, res) => {
 });
 
 // --- WEATHER LOGS ---
-router.get('/weather-logs', (req, res) => {
-    db.query('SELECT * FROM weather_logs', (err, results) => {
-        if (err) return res.status(500).send(err.message);
+router.get('/weather-logs', async (req, res) => {
+    try {
+        const [results] = await db.query('SELECT * FROM weather_logs');
         res.render('weather-logs', { logs: results });
-    });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
 });
 
 router.post('/weather-logs/add', (req, res) => {

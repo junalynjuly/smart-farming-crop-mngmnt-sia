@@ -1,0 +1,38 @@
+<%
+    const user   = typeof sessionUser !== 'undefined' ? sessionUser : null;
+    const groups = typeof navGroups !== 'undefined' ? navGroups : [];
+    const path   = typeof currentPath !== 'undefined' ? currentPath : '';
+
+    const isCurrent = (href) => path === href || path.startsWith(href + '/');
+%>
+
+<nav id="site-nav" class="site-nav" aria-label="Main">
+    <a href="/"<%- path === '/' ? ' aria-current="page"' : '' %>>Home</a>
+
+    <% groups.forEach((group) => { %>
+        <details class="nav-group<%= group.items.some((item) => isCurrent(item.href)) ? ' is-current' : '' %>">
+            <summary><%= group.label %></summary>
+
+            <div class="nav-menu">
+                <% group.items.forEach((item) => { %>
+                    <a href="<%= item.href %>"<%- isCurrent(item.href) ? ' aria-current="page"' : '' %>>
+                        <strong><%= item.label %></strong>
+                        <span><%= item.desc %></span>
+                    </a>
+                <% }); %>
+            </div>
+        </details>
+    <% }); %>
+</nav>
+
+<div class="account">
+    <% if (user) { %>
+        <div class="account__who">
+            <strong><%= user.full_name %></strong>
+            <small><%= user.role_name %></small>
+        </div>
+        <a href="/logout" class="btn btn--light">Log out</a>
+    <% } else { %>
+        <a href="/login" class="btn btn--light">Log in</a>
+    <% } %>
+</div>
