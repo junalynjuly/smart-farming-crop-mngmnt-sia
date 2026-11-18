@@ -1,0 +1,76 @@
+<%- include('partials/header', { pageTitle: 'Edit User' }) %>
+
+<main class="page" id="main">
+    <a class="back-link" href="/users">&larr; Back to Users</a>
+
+            <h1>Edit User</h1>
+
+            <form action="/users/edit/<%= user.user_id %>" method="POST">
+                <div class="field">
+                    <label>Full Name:</label>
+                    <input
+                        type="text"
+                        name="full_name"
+                        value="<%= user.full_name %>"
+                        required
+                        minlength="2"
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value="<%= user.email %>"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label>Role:</label>
+                    <select name="role_id" required>
+                        <% roles.forEach(role => { %>
+                            <option
+                                value="<%= role.role_id %>"
+                                <%= Number(user.role_id) === Number(role.role_id) ? 'selected' : '' %>
+                            >
+                                <%= role.role_name %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Farm:</label>
+                    <select name="farm_id">
+                        <option value="">No Farm Assigned</option>
+
+                        <% farms.forEach(farm => { %>
+                            <option
+                                value="<%= farm.farm_id %>"
+                                <%= Number(user.farm_id) === Number(farm.farm_id) ? 'selected' : '' %>
+                            >
+                                <%= farm.farm_name %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Account Status:</label>
+                    <select name="is_active" required>
+                        <option value="1" <%= user.is_active ? 'selected' : '' %>>
+                            Active
+                        </option>
+                        <option value="0" <%= !user.is_active ? 'selected' : '' %>>
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
+                <button type="submit">Save Changes</button>
+            </form>
+</main>
+
+<%- include('partials/footer') %>

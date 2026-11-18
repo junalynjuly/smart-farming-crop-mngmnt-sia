@@ -1,0 +1,41 @@
+<%- include('partials/head', { pageTitle: 'Log in' }) %>
+<body>
+
+<div class="auth">
+    <section class="auth__art">
+        <img src="/images/agrivance-wordmark.png" alt="AgriVance">
+
+        <div>
+            <h2>Grow smarter. Farm better.</h2>
+            <p>Plan plantings, track inputs and harvests, and catch problems in the field early.</p>
+        </div>
+    </section>
+
+    <main class="auth__panel" id="main">
+        <div class="auth__box">
+            <h1>Log in</h1>
+            <p>Use the account your farm manager set up for you.</p>
+
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="error" role="alert"><%= error %></div>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div class="field">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" autocomplete="username" required autofocus>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" autocomplete="current-password" required>
+                </div>
+
+                <button type="submit" class="btn--wide">Log in</button>
+            </form>
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

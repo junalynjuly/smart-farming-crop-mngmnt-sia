@@ -1,0 +1,40 @@
+<%- include('partials/header', { pageTitle: 'Edit Planting' }) %>
+
+<main class="page" id="main">
+    <a class="back-link" href="/plantings">&larr; Back to Plantings</a>
+        <h2>Edit Planting #<%= planting.planting_id %></h2>
+        <form action="/plantings/update/<%= planting.planting_id %>" method="POST">
+            <% if (typeof error !== 'undefined' && error) { %><div class="error"><%= error %></div><% } %>
+            <div class="field">
+                <label>Field:</label>
+                <input type="text" value="<%= planting.field_name %>" disabled>
+            </div>
+            <div class="field">
+                <label>Crop:</label>
+                <select name="crop_id" required>
+                    <% crops.forEach(c => { %>
+                        <option value="<%= c.crop_id %>" <%= c.crop_id === planting.crop_id ? 'selected' : '' %>><%= c.crop_name %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <div class="field">
+                <label>Planting Date:</label>
+                <input type="date" name="planting_date" value="<%= planting.planting_date %>" required>
+            </div>
+            <div class="field">
+                <label>Expected Harvest Date:</label>
+                <input type="date" name="expected_harvest_date" value="<%= planting.expected_harvest_date || '' %>">
+            </div>
+            <div class="field">
+                <label>Status:</label>
+                <select name="status" required>
+                    <% ['Active', 'Harvested', 'Failed'].forEach(s => { %>
+                        <option value="<%= s %>" <%= planting.status === s ? 'selected' : '' %>><%= s %></option>
+                    <% }); %>
+                </select>
+            </div>
+            <button type="submit">Update Planting</button>
+        </form>
+</main>
+
+<%- include('partials/footer') %>
